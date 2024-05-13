@@ -19,8 +19,9 @@ namespace NZWalks.API.Controllers
             this.mapper = mapper;
             this.walkRepository = walkRepository;
         }
-        // CREATE a new walk | POST
 
+
+        // CREATE a new walk | POST
         [HttpPost]
         public async Task<IActionResult> CreateWalk([FromBody] AddWalkRequestDto addWalkRequestDto)
         {
@@ -51,5 +52,24 @@ namespace NZWalks.API.Controllers
 
         }
 
+        // GET Walks
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            /*
+             1. define the repository method 
+                1.1 Create the interface: Repositories > IWalkRepository > Create the definition 
+                1.2 Create the implementation: Repositories > SQLWalksRepository > CTRL DOT to implement the remaining members explicitly 
+
+            2. use the repository to call the GetAllAsync method and store it into a variable 
+                - this will get the domain model
+
+            3. map the domain model to DTO and return it
+             */
+
+            var walksDomainModel = await walkRepository.GetAllAsync();
+
+            return Ok(mapper.Map<List<WalkDto>>(walksDomainModel));
+        }
     }
 }
