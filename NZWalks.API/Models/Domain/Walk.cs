@@ -14,7 +14,6 @@
 
         // Navigation properties
         public Difficulty Difficulty { get; set; } // this tells Entity Framework Core that a Walk will have a Difficulty 
-
         public Region Region { get; set; } // defines a one-to-one relationship between a Walk and a Region 
 
     }
