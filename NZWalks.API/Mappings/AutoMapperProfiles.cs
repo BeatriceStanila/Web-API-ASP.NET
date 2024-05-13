@@ -22,10 +22,14 @@ namespace NZWalks.API.Mappings
             // WALK MAPPERS 
             // add walk
             CreateMap<AddWalkRequestDto, Walk>().ReverseMap();
+
             CreateMap<Walk, WalkDto>().ReverseMap();
 
             // get all
             CreateMap<Difficulty, DifficultyDto>().ReverseMap();
+
+            //update walk
+            CreateMap<UpdateWalkDto, Walk>().ReverseMap();
         }
     }
 }
