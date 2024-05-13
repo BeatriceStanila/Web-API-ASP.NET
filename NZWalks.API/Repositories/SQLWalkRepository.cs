@@ -16,6 +16,8 @@ namespace NZWalks.API.Repositories
         {
             this.dbContext = dbContext;
         }
+
+        // post
         public async Task<Walk> CreateAsync(Walk walk)
         {
             // use the walk domain model and dbContext to save it to the database 
@@ -24,11 +26,22 @@ namespace NZWalks.API.Repositories
             return walk;
         }
 
+        // get all
         public async Task<List<Walk>> GetAllAsync()
         {
             // use the dbContext to get the list of walks from the database
             return await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
 
+        }
+
+        // get by id
+        public async Task<Walk?> GetByIdAsync(Guid id)
+        {
+            return await dbContext.Walks
+                      .Include("Difficulty")
+                      .Include("Region")
+                      .FirstOrDefaultAsync(x => x.Id == id);
+        
         }
     }
 }
