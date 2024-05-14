@@ -27,14 +27,14 @@ namespace NZWalks.API.Repositories
         }
 
         // get all
-        public async Task<List<Walk>> GetAllAsync(string? filterOn = null, string? filterQuery = null)
+        public async Task<List<Walk>> GetAllAsync(string? filterOn = null, string? filterQuery = null, string? sortBy = null, bool isAscending = true)
         {
             // use the dbContext to get the list of walks from the database
 
             // retrieve the walks
             var walks =  dbContext.Walks.Include("Difficulty").Include("Region").AsQueryable();
 
-            // apply filtering
+            // Filtering
             if(string.IsNullOrWhiteSpace(filterOn) == false  && string.IsNullOrWhiteSpace(filterQuery) == false )
             {
                 // check if the filter is on which column
@@ -45,12 +45,22 @@ namespace NZWalks.API.Repositories
                 }
             }
 
+            // Sorting
+            if (string.IsNullOrWhiteSpace(sortBy) == false )
+            {
+                if (sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    walks = isAscending ? walks.OrderBy(z => z.Name) : walks.OrderByDescending(z => z.Name);
+                }
+                else if (sortBy.Equals("Length", StringComparison.OrdinalIgnoreCase))
+                {
+                    walks = isAscending ? walks.OrderBy(x => x.LengthInKm) : walks.OrderByDescending( x => x.LengthInKm);
+                }
+            }
+
             return await walks.ToListAsync();
 
             //return await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
-
-
-
         }
 
         // get by id
