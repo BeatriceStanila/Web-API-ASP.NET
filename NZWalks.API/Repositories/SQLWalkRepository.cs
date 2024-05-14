@@ -27,10 +27,29 @@ namespace NZWalks.API.Repositories
         }
 
         // get all
-        public async Task<List<Walk>> GetAllAsync()
+        public async Task<List<Walk>> GetAllAsync(string? filterOn = null, string? filterQuery = null)
         {
             // use the dbContext to get the list of walks from the database
-            return await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
+
+            // retrieve the walks
+            var walks =  dbContext.Walks.Include("Difficulty").Include("Region").AsQueryable();
+
+            // apply filtering
+            if(string.IsNullOrWhiteSpace(filterOn) == false  && string.IsNullOrWhiteSpace(filterQuery) == false )
+            {
+                // check if the filter is on which column
+                if (filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+
+                    walks = walks.Where(z => z.Name.Contains(filterQuery));
+                }
+            }
+
+            return await walks.ToListAsync();
+
+            //return await dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
+
+
 
         }
 
