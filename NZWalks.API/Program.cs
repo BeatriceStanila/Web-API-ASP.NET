@@ -32,11 +32,11 @@ builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
 //inject automapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
-// authentication
+// identity user
 builder.Services.AddIdentityCore<IdentityUser>()
     .AddRoles<IdentityRole>()
     .AddTokenProvider<DataProtectorTokenProvider<IdentityUser>>("NZWalks")
-    .AddEntityFrameworkStores<NzWalksDbContext>()
+    .AddEntityFrameworkStores<NZWalksAuthDbContext>()
     .AddDefaultTokenProviders();
 
 // identity options
