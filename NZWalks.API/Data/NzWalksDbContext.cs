@@ -6,7 +6,7 @@ namespace NZWalks.API.Data
     public class NzWalksDbContext: DbContext
     {
         // constructor passed to the base class 
-        public NzWalksDbContext(DbContextOptions dbContextOptions): base(dbContextOptions)
+        public NzWalksDbContext(DbContextOptions<NzWalksDbContext> dbContextOptions): base(dbContextOptions)
         {
                 
         }
