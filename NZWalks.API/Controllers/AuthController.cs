@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NZWalks.API.Models.DTO;
+using System.Diagnostics.Eventing.Reader;
 
 namespace NZWalks.API.Controllers
 {
@@ -22,7 +23,7 @@ namespace NZWalks.API.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto registerRequestDto)
         {
             /*
-             1. Create a register request DTO with username and password and pass it as methods' parameter
+             1. Create a register request DTO with username and password and pass it as methods' parameter, because the method receives some information from the user 
              2. Register a user, using User Manager class provided from Identity > injected in the constructor
              3. use the identity result to check if it succeded and add roles to the user > addToRolesAsync method from UserManager class
              */
@@ -51,6 +52,30 @@ namespace NZWalks.API.Controllers
 
             }
                 return BadRequest("Something went wrong");
+        }
+
+
+        // LOGIN functionality 
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
+        {
+            // use the UserManager class 
+            var user = await userManager.FindByEmailAsync(loginRequestDto.Username); //hover over it -> this is a Identity user and can be null
+
+            if (user != null)
+            {
+                // check if the password is correct or not
+               var checkPasswordResult = await userManager.CheckPasswordAsync(user, loginRequestDto.Password); // this returns true or false 
+
+                if (checkPasswordResult)
+                {
+                    // create token and return an ok response
+                    return Ok();
+                }
+            }
+
+            return BadRequest("Userame or Password incorrect");
         }
     }
 }
