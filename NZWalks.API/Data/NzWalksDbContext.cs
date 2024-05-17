@@ -18,6 +18,8 @@ namespace NZWalks.API.Data
 
         public DbSet<Walk> Walks { get; set; }
 
+        public DbSet<Image> Images { get; set; }
+
 
         // SEEDING DATA IN THE DATABASE
 

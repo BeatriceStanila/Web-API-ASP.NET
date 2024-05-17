@@ -13,6 +13,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
+builder.Services.AddHttpContextAccessor();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -57,6 +58,7 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("NZWalksAuthConne
 builder.Services.AddScoped<IRegionRepository, SqlRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
 builder.Services.AddScoped<ILoginTokenRepository, LoginTokenRepository>();
+builder.Services.AddScoped<IUploadImageRepository, LocalImageRepository>();
 
 //inject automapper
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
