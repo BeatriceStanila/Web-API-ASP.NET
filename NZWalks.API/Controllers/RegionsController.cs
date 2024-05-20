@@ -8,6 +8,7 @@ using NZWalks.API.Data;
 using NZWalks.API.Models.Domain;
 using NZWalks.API.Models.DTO;
 using NZWalks.API.Repositories;
+using System.Text.Json;
 
 namespace NZWalks.API.Controllers
 {
@@ -19,27 +20,37 @@ namespace NZWalks.API.Controllers
         private readonly NzWalksDbContext dbContext;
         private readonly IRegionRepository regionRepository;
         private readonly IMapper mapper;
+        private readonly ILogger<RegionsController> logger;
 
-        public RegionsController(NzWalksDbContext dbContext, IRegionRepository regionRepository, IMapper mapper)
+        public RegionsController(NzWalksDbContext dbContext, IRegionRepository regionRepository, IMapper mapper, ILogger<RegionsController> logger )
         {
             this.dbContext = dbContext;
             this.regionRepository = regionRepository;
             this.mapper = mapper;
+            this.logger = logger;
         }
 
 
         // GET all regions: https://localhost:7125/api/Regions
         [HttpGet]
-        [Authorize(Roles = "Reader")]
+        //[Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAll()
         {
-            // Get Data from Database - Domain Models
-            var regionsDomain = await regionRepository.GetAllAsync();
 
-            // Map/Convert Domain Models to DTOs
-            // Automapper will convert the regionsDomain to RegionDTo
-            // Return DTOs to the client
-            return Ok(mapper.Map<List<RegionDto>>(regionsDomain));
+           
+                // Get Data from Database - Domain Models
+                var regionsDomain = await regionRepository.GetAllAsync();
+
+
+                // convert region domain data to JSON data
+                logger.LogInformation($"Finised GetAllRegions request with data: {JsonSerializer.Serialize(regionsDomain)}");
+
+
+                // Map/Convert Domain Models to DTOs
+                // Automapper will convert the regionsDomain to RegionDTo
+                // Return DTOs to the client
+                return Ok(mapper.Map<List<RegionDto>>(regionsDomain));
+                               
         }
 
         // GET region by ID: https://localhost:7125/api/Regions/{id}

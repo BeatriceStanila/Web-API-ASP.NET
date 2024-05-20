@@ -5,6 +5,7 @@ using NZWalks.API.CustomActionFilters;
 using NZWalks.API.Models.Domain;
 using NZWalks.API.Models.DTO;
 using NZWalks.API.Repositories;
+using System.Net;
 
 namespace NZWalks.API.Controllers
 {
@@ -60,21 +61,26 @@ namespace NZWalks.API.Controllers
         public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery]  string? filterQuery, [FromQuery] string? sortBy,
                                                  [FromQuery] bool? isAscending, [FromQuery] int pageNumber =1, [FromQuery] int pageSize = 1000  )
         {
-            /*
-             1. define the repository method 
-                1.1 Create the interface: Repositories > IWalkRepository > Create the definition 
-                1.2 Create the implementation: Repositories > SQLWalksRepository > CTRL DOT to implement the remaining members explicitly 
+                    
+                 /*
+                     1. define the repository method 
+                         1.1 Create the interface: Repositories > IWalkRepository > Create the definition 
+                         1.2 Create the implementation: Repositories > SQLWalksRepository > CTRL DOT to implement the remaining members explicitly 
 
-            2. use the repository to call the GetAllAsync method and store it into a variable 
-                - this will get the domain model
+                     2. use the repository to call the GetAllAsync method and store it into a variable 
+                         - this will get the domain model
 
-            3. map the domain model to DTO and return it
-             */
+                     3. map the domain model to DTO and return it
+                 */
 
-            var walksDomainModel = await walkRepository.GetAllAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
+                var walksDomainModel = await walkRepository.GetAllAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber, pageSize);
 
-            return Ok(mapper.Map<List<WalkDto>>(walksDomainModel));
-        }
+            //create an exception
+           // throw new Exception("this is a new exception");
+
+                return Ok(mapper.Map<List<WalkDto>>(walksDomainModel));
+          
+       }
 
 
         // GET Walk by ID
